@@ -165,11 +165,16 @@ public class DB_Helper extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_OFFLINE_DATA;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
-
         // return count
-        return cursor.getCount();
+        return count;
     }
 
+    public void deleteAllContacts(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_OFFLINE_DATA);
+
+    }
 
 }

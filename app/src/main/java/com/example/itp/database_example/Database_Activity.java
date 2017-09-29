@@ -36,6 +36,7 @@ public class Database_Activity extends AppCompatActivity {
 
         Button btn = (Button) findViewById(R.id.button);
         Button pay_btn = (Button) findViewById(R.id.button_pay);
+        Button delete_btn = (Button) findViewById(R.id.button_deleteall);
         final EditText et_val = (EditText) findViewById(R.id.et_updatevalue);
 
         db = new DB_Helper(this);
@@ -79,8 +80,13 @@ public class Database_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 request();
+            }
+        });
 
-
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.deleteAllContacts();
             }
         });
 
@@ -97,6 +103,8 @@ public class Database_Activity extends AppCompatActivity {
 
             }
         });
+
+        Toast.makeText(Database_Activity.this, "" + db.getContactsCount(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -159,7 +167,13 @@ public class Database_Activity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("ScrNo", "lkk!@!#!   013:70   006");//280e900002f  lkk!@!#!  L4049C14
+                String machineID = fixedLengthString("lkk!@!#!", 11);
+                String version = fixedLengthString("013", 3);
+                String command = fixedLengthString(":70", 3);
+                String startcount = fixedLengthString("", 3);
+                String endcount = fixedLengthString("036", 3);
+
+                params.put("ScrNo", machineID + version + command + startcount + endcount);//280e900002f  lkk!@!#!  L4049C14
                 return params;
             }
 
@@ -186,4 +200,10 @@ public class Database_Activity extends AppCompatActivity {
         }
         return ret;
     }
+
+    public static String fixedLengthString(String string, int length) {
+        return String.format("%1$" + length + "s", string);
+    }
+
+
 }
